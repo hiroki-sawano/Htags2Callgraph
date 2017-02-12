@@ -31,7 +31,7 @@ public class GraphvizTranslator {
             writer = new BufferedWriter(new FileWriter(file));
             writer.write("digraph system {\n");
             writer.write("    rankdir=LR;\n");
-            writer.write("    node  [style=\"rounded, filled, bold\", shape=box, fixedsize=true, width=1.7, fontname=\"Arial\"];\n");
+            writer.write("    node  [style=\"rounded, filled, bold\", shape=box, fixedsize=true, width=1.8, fontname=\"Arial\"];\n");
             writer.write("    edge  [style=bold, fontname=\"Arial\", weight=2];\n");
             
             //writer.write("    Layouts_" + Config.layout + " [shape = box];\n");
