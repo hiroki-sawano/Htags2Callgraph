@@ -4,10 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import kripke.Automaton;
-import kripke.Label;
-import kripke.State;
-import kripke.TransitionRelation;
+import graph.Automaton;
+import graph.State;
+import graph.TransitionRelation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -19,32 +18,30 @@ public class Parser {
     public static void main(String[] args) throws IOException {
         Automaton automaton = new Automaton();
 
-        // for example /Users/macbookair/Documents/workspace/PHPASTAnalyzer/src/HTML
+        // HTML directory created by htags (e.g. ~/myproj/src/HTML)
         String workDir = args[0];        
-        // search condition
+        // regular expression which expects to be matched with classes you want to focus on
         String regex = args[1];
 
-        // read filemap to create HashMap (class -> html path)
+        // read FILEMAP to create HashMap (class -> source page)
         FILEMAP filemap = new FILEMAP(workDir + "/FILEMAP");
         
-        // read R directory to create HashMap (callee class -> list of html whose classes are caller)
+        // read a directory containing pages which have list of links to each class in order to create HashMap (callee class -> list of source pages of callers)
         R r = new R(workDir + "/R", regex);
 
-        // get class names from tha map
+        // add class names from FILEMAP to state list
         for (String entry : filemap.getFilemap().keySet()) {
-            // if each class meet the search condition
+            // if a retrieved class meets the search condition, add it, as a new state, into the automaton (no need for checking if it is new)
             if (FilenameUtils.getBaseName(entry).matches(regex)) {
-                // put the state into the state list when it is new
                 State state = new State(FilenameUtils.getBaseName(entry), filemap.getFilemap().get(entry), "concerned");
                 automaton.addState(state);
             }
         }
 
-        List<State> newstates = new ArrayList<>();
-        
-        // parse the html file corresponding to the class to collect relations from caller states
+        // parse html files having links to added states above so as to collect edges between callers and callees
+        // when unknown states appear during the process, they will be in List of State below and merged into the automaton later so that it can avoid ConcurrentModificationException
+        List<State> newstates = new ArrayList<>();  
         for (State to : automaton.getStates()) {
-            // find the class in R directory
             String key = to.getId();
             if (r.getRMap().containsKey(key)) {
                 System.out.println(key + " is found in " + r.getPath());
@@ -58,15 +55,15 @@ public class Parser {
                     caller = FilenameUtils.getBaseName(document.title());
 
                     State from;
-                    // only if caller meets the search condition, regard it as the same type of state,
-                    // otherwise, give a different attribute to the found state so as to distinguish the states meeting condition and the others
                     if (automaton.isNewState(caller)) {
+                        // give a different attribute to a state so as to distinguish states especially you want to look at from the others
                         from = new State(caller, callerURL, "notconcerned");
                         newstates.add(from);
                     } else {
                         from = automaton.getState(caller);
                     }
-                    TransitionRelation transition = new TransitionRelation(from, to, new Label("", ""));
+                    // haven't given a label for now, but putting step number in it might be useful
+                    TransitionRelation transition = new TransitionRelation(from, to, null);
                     if (automaton.isNewTransition(transition)) {
                         automaton.addTransitionRelation(transition);
                     }

@@ -1,4 +1,4 @@
-package kripke;
+package graph;
 
 public class TransitionRelation {
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visitor;
 
 import java.io.File;
@@ -16,10 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-/**
- *
- * @author macbookair
- */
 public class R {
 
     private String path;
@@ -49,6 +40,10 @@ public class R {
         }
     }
     
+    public String getPath(){
+        return this.path;
+    }
+    
     public HashMap<String, List<String>> getRMap(){
         return rMap;
     }
@@ -61,9 +56,5 @@ public class R {
                 System.out.println("> " + e);
             }
         }
-    }
-    
-    public String getPath(){
-        return this.path;
     }
 }
