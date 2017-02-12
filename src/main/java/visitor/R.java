@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,7 +25,7 @@ public class R {
     private String path;
     private HashMap<String, List<String>> rMap = new HashMap<>();
 
-    R(String path) throws IOException {
+    R(String path, String regex) throws IOException {
         this.path = path;
         
         final File folder = new File(path);
@@ -34,14 +35,16 @@ public class R {
                 
                 File file = new File(folder.getAbsolutePath() + "/" + fileEntry.getName());
                 Document document = Jsoup.parse(file, "UTF-8");
-                Elements elements = document.select("span.curline > a");
-                List<String> hrefs = new ArrayList<>();
+                if(FilenameUtils.getBaseName(document.title()).matches(regex)){
+                    Elements elements = document.select("span.curline > a");
+                    List<String> hrefs = new ArrayList<>();
 
-                for (Element element : elements) {
-                    hrefs.add(element.attr("href"));
+                    for (Element element : elements) {
+                        hrefs.add(element.attr("href"));
+                    }
+
+                    rMap.put(document.title(), hrefs);
                 }
-
-                rMap.put(document.title(), hrefs);
             }
         }
     }
@@ -58,5 +61,9 @@ public class R {
                 System.out.println("> " + e);
             }
         }
+    }
+    
+    public String getPath(){
+        return this.path;
     }
 }

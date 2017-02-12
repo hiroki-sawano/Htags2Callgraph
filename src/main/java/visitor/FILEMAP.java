@@ -16,9 +16,11 @@ import java.util.HashMap;
  */
 public class FILEMAP {
 
+    private String path;
     private HashMap<String, String> fileMap = new HashMap<>();
 
     FILEMAP(String path) throws IOException {
+        this.path = path;
         StringBuilder builder = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -34,6 +36,13 @@ public class FILEMAP {
     
     public HashMap<String, String> getFilemap(){
         return fileMap;
+    }
+    
+    public void print(){
+        System.out.println(path + ":");
+        for (String s : fileMap.keySet()) {
+            System.out.println(s + " -> " + fileMap.get(s));
+        }
     }
     
 }

@@ -2,6 +2,8 @@ package visitor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import kripke.Automaton;
 import kripke.Label;
 import kripke.State;
@@ -26,24 +28,26 @@ public class Parser {
         FILEMAP filemap = new FILEMAP(workDir + "/FILEMAP");
         
         // read R directory to create HashMap (callee class -> list of html whose classes are caller)
-        R r = new R(workDir + "/R");
+        R r = new R(workDir + "/R", regex);
 
         // get class names from tha map
         for (String entry : filemap.getFilemap().keySet()) {
             // if each class meet the search condition
-            if (entry.matches(regex)) {
+            if (FilenameUtils.getBaseName(entry).matches(regex)) {
                 // put the state into the state list when it is new
                 State state = new State(FilenameUtils.getBaseName(entry), filemap.getFilemap().get(entry), "concerned");
                 automaton.addState(state);
             }
         }
 
+        List<State> newstates = new ArrayList<>();
+        
         // parse the html file corresponding to the class to collect relations from caller states
         for (State to : automaton.getStates()) {
             // find the class in R directory
             String key = to.getId();
             if (r.getRMap().containsKey(key)) {
-                System.out.println("true:" + key);
+                System.out.println(key + " is found in " + r.getPath());
                 for (String callerURL : r.getRMap().get(key)) {
                     callerURL = StringUtils.strip(callerURL, "../");
                     String caller = callerURL.split("#")[0];
@@ -58,7 +62,7 @@ public class Parser {
                     // otherwise, give a different attribute to the found state so as to distinguish the states meeting condition and the others
                     if (automaton.isNewState(caller)) {
                         from = new State(caller, callerURL, "notconcerned");
-                        automaton.addState(from);
+                        newstates.add(from);
                     } else {
                         from = automaton.getState(caller);
                     }
@@ -68,8 +72,12 @@ public class Parser {
                     }
                 }
             } else {
-                System.out.println("cannot find " + key + " in R. Why does it happen?");
+                System.out.println(key + " is not called.");
             }
+        }
+        
+        for(State s : newstates){
+            automaton.addState(s);
         }
 
         GraphvizTranslator graphTran = new GraphvizTranslator(automaton, "/opt/local/bin/dot", "/Users/macbookair/Desktop");

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import kripke.Automaton;
+import kripke.State;
 import kripke.TransitionRelation;
 
 public class GraphvizTranslator {
@@ -29,13 +30,31 @@ public class GraphvizTranslator {
         try {
             writer = new BufferedWriter(new FileWriter(file));
             writer.write("digraph system {\n");
-
+            writer.write("    rankdir=LR;\n");
+            writer.write("    node  [style=\"rounded, filled, bold\", shape=box, fixedsize=true, width=1.7, fontname=\"Arial\"];\n");
+            writer.write("    edge  [style=bold, fontname=\"Arial\", weight=2];\n");
+            
             //writer.write("    Layouts_" + Config.layout + " [shape = box];\n");
-            writer.write("    S [shape = circle, style = filled, color = black, width = 0.3, height = 0.3]\n");
+            //writer.write("    S [shape = circle, style = filled, color = black, width = 0.3, height = 0.3]\n");
             //writer.write("    ext [peripheries = 2, shape = circle, style = filled, color = black, width = 0.3, height = 0.3]\n");
 
             //writer.write("    S->" + automaton.getInitialState() + " [ label = \"\" ]\n");
 
+            for (State state : automaton.getStates()){
+                // should change the shape depending on whether it is concerned or not
+                // fillcolor should be decided on only the names of classes
+                if(state.getAttr().equals("concerned")){
+                    writer.write("    " + state + " [fillcolor=\"#a0ffa0\"]\n");
+                    
+                    
+                    
+                }else{
+                    writer.write("    " + state + " [fillcolor=\"#ffa0a0\"]\n");
+                    
+                    
+                    
+                }
+            }
             for (TransitionRelation transitionRelation : automaton.getTransitionRelations()) {
                 writer.write("    " + transitionRelation + "\n");
             }

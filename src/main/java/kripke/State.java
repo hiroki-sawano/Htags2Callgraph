@@ -28,6 +28,10 @@ public class State {
     public String getValue() {
         return this.value;
     }
+    
+    public String getAttr(){
+        return this.attr;
+    }
 
     public void setValue(String value) {
         this.value = value;
