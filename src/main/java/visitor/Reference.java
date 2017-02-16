@@ -11,12 +11,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class R {
+public class Reference {
 
     private String path;
-    private HashMap<String, List<String>> rMap = new HashMap<>();
+    private HashMap<String, List<String>> tagMap = new HashMap<>();
 
-    R(String path, String regex) throws IOException {
+    Reference(String path, String regex) throws IOException {
         this.path = path;
         
         final File folder = new File(path);
@@ -26,6 +26,8 @@ public class R {
                 
                 File file = new File(folder.getAbsolutePath() + "/" + fileEntry.getName());
                 Document document = Jsoup.parse(file, "UTF-8");
+                
+                System.out.println(document.title());
                 if(FilenameUtils.getBaseName(document.title()).matches(regex)){
                     Elements elements = document.select("span.curline > a");
                     List<String> hrefs = new ArrayList<>();
@@ -33,8 +35,7 @@ public class R {
                     for (Element element : elements) {
                         hrefs.add(element.attr("href"));
                     }
-
-                    rMap.put(document.title(), hrefs);
+                    tagMap.put(document.title(), hrefs);
                 }
             }
         }
@@ -44,15 +45,15 @@ public class R {
         return this.path;
     }
     
-    public HashMap<String, List<String>> getRMap(){
-        return rMap;
+    public HashMap<String, List<String>> getTagMap(){
+        return tagMap;
     }
     
     public void print(){
         System.out.println(path + ":");
-        for (String s : rMap.keySet()) {
+        for (String s : tagMap.keySet()) {
             System.out.println(s);
-            for (String e : rMap.get(s)) {
+            for (String e : tagMap.get(s)) {
                 System.out.println("> " + e);
             }
         }

@@ -39,6 +39,11 @@ public class State {
 
     @Override
     public String toString() {
-        return this.id;
+        if(this.id.contains(".")){
+            int last = this.id.lastIndexOf(".");
+            return this.id.substring(0, last);
+        }else{
+            return this.id;
+        }
     }
 }

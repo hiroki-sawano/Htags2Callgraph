@@ -16,6 +16,7 @@ public class FILEMAP {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String string = reader.readLine();
             while (string != null) {
+                System.out.println(string);
                 String[] strs = string.split("\\s+");
                 fileMap.put(strs[0], strs[1]);
 
