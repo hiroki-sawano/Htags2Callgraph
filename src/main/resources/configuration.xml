@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <htags_dir>/project/src/HTML</htags_dir>
+    <output_dir>/project/callgraph</output_dir>
+    <regex>.*</regex>
+    <graphviz>
+        <command>/opt/local/bin/dot</command>
+        <command>/opt/local/bin/neato</command>
+        <command>/opt/local/bin/fdp</command>
+        <command>/opt/local/bin/sfdp</command>
+        <command>/opt/local/bin/twopi</command>
+        <command>/opt/local/bin/circo</command>
+        <command>/opt/local/bin/osage</command>
+        <nodes>
+            <specified>
+                <node shape="box" fillcolor="#33ffff">.*Model.*</node>
+                <node shape="box" fillcolor="#33ff00">.*View.*</node>
+                <node shape="box" fillcolor="#ff6633">.*Controller.*</node>
+                <node shape="box" fillcolor="#ffff00">.*</node>
+            </specified>
+            <unspecified>
+                <node shape="hexagon" fillcolor="#33ffff">.*Model.*</node>
+                <node shape="hexagon" fillcolor="#33ff00">.*View.*</node>
+                <node shape="hexagon" fillcolor="#ff6633">.*Controller.*</node>
+                <node shape="hexagon" fillcolor="#ffff00">.*</node>
+            </unspecified>
+        </nodes>
+    </graphviz>
+</configuration>
+

@@ -16,40 +16,59 @@ public class Reference {
     private String path;
     private HashMap<String, List<String>> tagMap = new HashMap<>();
 
-    Reference(String path, String regex) throws IOException {
+    Reference(String path, String regex) {
         this.path = path;
-        
+
         final File folder = new File(path);
 
-        for (final File fileEntry : folder.listFiles()) {
-            if (!fileEntry.isDirectory()) {
-                
-                File file = new File(folder.getAbsolutePath() + "/" + fileEntry.getName());
-                Document document = Jsoup.parse(file, "UTF-8");
-                
-                System.out.println(document.title());
-                if(FilenameUtils.getBaseName(document.title()).matches(regex)){
-                    Elements elements = document.select("span.curline > a");
-                    List<String> hrefs = new ArrayList<>();
+        if (folder.exists()) {
+            for (final File fileEntry : folder.listFiles()) {
+                if (!fileEntry.isDirectory()) {
+                    try {
+                        File file = new File(folder.getAbsolutePath() + "/" + fileEntry.getName());
+                        Document document;
+                        document = Jsoup.parse(file, "UTF-8");
+                        System.out.println(document.title());
+                        if (FilenameUtils.getBaseName(document.title()).matches(regex)) {
+                            Elements elements = document.select("span.curline > a");
+                            List<String> hrefs = new ArrayList<>();
 
-                    for (Element element : elements) {
-                        hrefs.add(element.attr("href"));
+                            for (Element element : elements) {
+                                hrefs.add(element.attr("href"));
+                            }
+                            tagMap.put(document.title(), hrefs);
+                        }
+                    } catch (IOException ex) {
+                        // warning : cannot read file
+                        
+                        
+                        
                     }
-                    tagMap.put(document.title(), hrefs);
+                }else{
+                    // warning : ignore sub directory
+                    
+                    
+                    
                 }
             }
+        } else {
+            // warning : cannot find directory
+            
+            
+            
         }
+
     }
-    
-    public String getPath(){
+
+    public String getPath() {
         return this.path;
     }
-    
-    public HashMap<String, List<String>> getTagMap(){
+
+    public HashMap<String, List<String>> getTagMap() {
         return tagMap;
     }
-    
-    public void print(){
+
+    public void print() {
         System.out.println(path + ":");
         for (String s : tagMap.keySet()) {
             System.out.println(s);

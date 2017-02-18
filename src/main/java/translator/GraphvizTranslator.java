@@ -1,5 +1,7 @@
 package translator;
 
+import generated.GraphvizType;
+import generated.NodeType;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,21 +11,23 @@ import java.util.List;
 import graph.Automaton;
 import graph.State;
 import graph.TransitionRelation;
+import org.apache.commons.io.FilenameUtils;
+import system.Settings;
 
 public class GraphvizTranslator {
 
+    private Settings settings;
     private Automaton automaton;
-    private String graphCommand;
-    private String outputDir;
     
-    public GraphvizTranslator(Automaton automaton, String graphCommand, String outputDir){
+    public GraphvizTranslator(Automaton automaton){
+        settings = Settings.getInstance();
         this.automaton = automaton;
-        this.graphCommand = graphCommand;
-        this.outputDir = outputDir;
     }
     
     public void printGraph(Boolean printImage) {
-        String outputPath = outputDir + "/graph.dot";
+        GraphvizType graphviz = settings.getGraphviz();
+        String outputPath = settings.getOutputDir() + "/graph.dot";
+        
         BufferedWriter writer;
 
         File file = new File(outputPath);
@@ -38,27 +42,27 @@ public class GraphvizTranslator {
                 // should change the shape depending on whether it is concerned or not
                 // fillcolor should be customizable, for instance, changing color based on naming convention might work well
                 if(state.getAttr().equals("concerned")){
-                    if(state.toString().matches(".......BC..")){
-                        writer.write("    " + state + " [fillcolor=\"#33ffff\"]\n");
-                    }else if(state.toString().matches(".......BW..")){
-                        writer.write("    " + state + " [fillcolor=\"#33ff00\"]\n");
-                    }else if(state.toString().matches(".......AC..")){
-                        writer.write("    " + state + " [fillcolor=\"#ff6633\"]\n");
-                    }else if(state.toString().matches(".......CM..")){
-                        writer.write("    " + state + " [fillcolor=\"#ffff00\"]\n");
-                    }else{
+                    boolean match = false;
+                    for(NodeType node : graphviz.getNodes().getSpecified().getNode()){
+                        if(state.toString().matches(node.getValue())){
+                            writer.write("    " + state + " [shape=" + node.getShape() + ", fillcolor=\"" + node.getFillcolor() + "\"]\n");
+                            match = true;
+                            break;
+                        }
+                    }
+                    if(!match){
                         writer.write("    " + state + " [fillcolor=\"#ff00ff\"]\n");
                     }
                 }else{
-                    if(state.toString().matches(".......BC..")){
-                        writer.write("    " + state + " [shape=hexagon, fillcolor=\"#33ffff\"]\n");
-                    }else if(state.toString().matches(".......BW..")){
-                        writer.write("    " + state + " [shape=hexagon, fillcolor=\"#33ff00\"]\n");
-                    }else if(state.toString().matches(".......AC..")){
-                        writer.write("    " + state + " [shape=hexagon, fillcolor=\"#ff6633\"]\n");
-                    }else if(state.toString().matches(".......CM..")){
-                        writer.write("    " + state + " [shape=hexagon, fillcolor=\"#ffff00\"]\n");
-                    }else{
+                    boolean match = false;
+                    for(NodeType node : graphviz.getNodes().getUnspecified().getNode()){
+                        if(state.toString().matches(node.getValue())){
+                            writer.write("    " + state + " [shape=" + node.getShape() + ", fillcolor=\"" + node.getFillcolor() + "\"]\n");
+                            match = true;
+                            break;
+                        }
+                    }
+                    if(!match){
                         writer.write("    " + state + " [shape=hexagon, fillcolor=\"#ff00ff\"]\n");
                     }
                 }
@@ -70,23 +74,34 @@ public class GraphvizTranslator {
             writer.write("}\n");
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            // error : cannot open outputPath
+            
+            
+            
+            
+            
         }
 
         if (printImage) {
-            List<String> argv = new ArrayList<>();
-            argv.add(graphCommand);
-            argv.add("-Tgif");
-            argv.add(outputDir + "/graph.dot");
-            argv.add("-o");
-            argv.add(outputDir + "/graph.gif");
+            for(String command : graphviz.getCommand()){
+                List<String> argv = new ArrayList<>();
+                argv.add(command);
+                argv.add("-Tgif");
+                argv.add(outputPath);
+                argv.add("-o");
+                argv.add(settings.getOutputDir() + "/" + FilenameUtils.getBaseName(command) + ".gif");
 
-            ProcessBuilder pb = new ProcessBuilder(argv);
-            try {
-                Process p = pb.start();
-                p.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+                ProcessBuilder pb = new ProcessBuilder(argv);
+                try {
+                    Process p = pb.start();
+                    p.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    // warning : command failed
+                    
+                    
+                    
+                    
+                }
             }
         }
     }
