@@ -9,6 +9,8 @@ import graph.State;
 import graph.TransitionRelation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import system.Settings;
@@ -18,6 +20,7 @@ public class Parser {
 
     private static Automaton automaton;
     private static Settings settings;
+    private static Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
         settings = Settings.getInstance();
@@ -30,10 +33,8 @@ public class Parser {
         try {
             filemap = new FILEMAP(settings.getHtagsDir() + "/FILEMAP");
         } catch (IOException ex) {
-            // error : cannot read FILEMAP
-            
-            
-            
+            logger.error("can't read:" + settings.getHtagsDir() + "/FILEMAP");
+            return;
         }
 
         // add class names from FILEMAP to state list
@@ -59,7 +60,7 @@ public class Parser {
             } else if (y.getTagMap().containsKey(key)) {
                 createEdges(y, to, newstates);
             } else {
-                System.out.println(key + " is not called.");
+                logger.info(key + " is not called.");
             }
         }
 
@@ -73,7 +74,7 @@ public class Parser {
 
     private static void createEdges(Reference reference, State to, List<State> newstates) {
         String key = to.getId();
-        System.out.println(key + " is found in " + reference.getPath());
+        logger.info(key + " is found in " + reference.getPath());
         for (String callerURL : reference.getTagMap().get(key)) {
             callerURL = StringUtils.strip(callerURL, "../");
             String caller = callerURL.split("#")[0];
@@ -98,11 +99,7 @@ public class Parser {
                     automaton.addTransitionRelation(transition);
                 }
             } catch (IOException ex) {
-                // error : cannot read reference file
-                
-                
-                
-                
+                logger.warn("can't read:" + settings.getHtagsDir() + "/" + caller);
             }
         }
     }

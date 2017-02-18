@@ -10,13 +10,10 @@ public class Automaton{
     private List<TransitionRelation> transitionRelations = new ArrayList<>();
     
     public void setInitialState(State s) {
-        //State s = new State(id, "S0000", "");
         initialState = s;
     }
 
     public void addState(State s){
-        //int stateNum = states.size() + 1;
-        //s.setValue(String.format("S%04d", stateNum));
         states.add(s);
     }
 

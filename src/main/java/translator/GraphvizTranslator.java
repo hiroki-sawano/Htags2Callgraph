@@ -12,12 +12,15 @@ import graph.Automaton;
 import graph.State;
 import graph.TransitionRelation;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import system.Settings;
 
 public class GraphvizTranslator {
 
     private Settings settings;
     private Automaton automaton;
+    private static Logger logger = LogManager.getLogger();
     
     public GraphvizTranslator(Automaton automaton){
         settings = Settings.getInstance();
@@ -28,19 +31,15 @@ public class GraphvizTranslator {
         GraphvizType graphviz = settings.getGraphviz();
         String outputPath = settings.getOutputDir() + "/graph.dot";
         
-        BufferedWriter writer;
-
         File file = new File(outputPath);
         try {
-            writer = new BufferedWriter(new FileWriter(file));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write("digraph system {\n");
             writer.write("    rankdir=LR;\n");
             writer.write("    node  [style=\"rounded, filled, bold\", shape=box, fixedsize=true, width=1.8, fontname=\"Arial\"];\n");
             writer.write("    edge  [style=bold, fontname=\"Arial\", weight=2];\n");
             
             for (State state : automaton.getStates()){
-                // should change the shape depending on whether it is concerned or not
-                // fillcolor should be customizable, for instance, changing color based on naming convention might work well
                 if(state.getAttr().equals("concerned")){
                     boolean match = false;
                     for(NodeType node : graphviz.getNodes().getSpecified().getNode()){
@@ -74,12 +73,8 @@ public class GraphvizTranslator {
             writer.write("}\n");
             writer.close();
         } catch (IOException e) {
-            // error : cannot open outputPath
-            
-            
-            
-            
-            
+            logger.error("can't open:" + outputPath);
+            return;
         }
 
         if (printImage) {
@@ -96,11 +91,8 @@ public class GraphvizTranslator {
                     Process p = pb.start();
                     p.waitFor();
                 } catch (IOException | InterruptedException e) {
-                    // warning : command failed
-                    
-                    
-                    
-                    
+                    logger.error(command + " failed");
+                    return;
                 }
             }
         }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,6 +17,7 @@ public class Reference {
 
     private String path;
     private HashMap<String, List<String>> tagMap = new HashMap<>();
+    private static Logger logger = LogManager.getLogger();
 
     Reference(String path, String regex) {
         this.path = path;
@@ -26,9 +29,10 @@ public class Reference {
                 if (!fileEntry.isDirectory()) {
                     try {
                         File file = new File(folder.getAbsolutePath() + "/" + fileEntry.getName());
+                        logger.info(folder.getAbsolutePath() + "/" + fileEntry.getName());
+                        
                         Document document;
                         document = Jsoup.parse(file, "UTF-8");
-                        System.out.println(document.title());
                         if (FilenameUtils.getBaseName(document.title()).matches(regex)) {
                             Elements elements = document.select("span.curline > a");
                             List<String> hrefs = new ArrayList<>();
@@ -39,25 +43,15 @@ public class Reference {
                             tagMap.put(document.title(), hrefs);
                         }
                     } catch (IOException ex) {
-                        // warning : cannot read file
-                        
-                        
-                        
+                        logger.warn("can't read:" + folder.getAbsolutePath() + "/" + fileEntry.getName());
                     }
                 }else{
-                    // warning : ignore sub directory
-                    
-                    
-                    
+                    logger.warn("ignore nested directory:" + folder.getAbsolutePath() + "/" + fileEntry.getName());
                 }
             }
         } else {
-            // warning : cannot find directory
-            
-            
-            
+            logger.warn("can't find:" + path);
         }
-
     }
 
     public String getPath() {
