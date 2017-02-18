@@ -65,22 +65,13 @@
                         <goals>
                             <goal>generate</goal>
                         </goals>
-                        <configuration>
-                            <schemaIncludes>
-                                <include>jaxb/Configuration/*.xsd</include>
-                            </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-Configuration.episode</episodeFile>
-                            <generatePackage>system</generatePackage>
-                        </configuration>
-                        <id>jaxb-generate-Configuration</id>
                     </execution>
                 </executions>
                 <configuration>
-                    <catalog>src/main/resources/jaxb/catalog.xml</catalog>
-                    <catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
-                    <forceRegenerate>true</forceRegenerate>
-                    <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
-                    <verbose>true</verbose>
+                    <schemaDirectory>src/main/resources/schema</schemaDirectory>
+                    <generateDirectory>src/main/java/</generateDirectory>
+                    <generatePackage>generated</generatePackage>
+                    <removeOldOutput>false</removeOldOutput>
                 </configuration>
             </plugin>
         </plugins>
