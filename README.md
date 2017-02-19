@@ -35,13 +35,13 @@ Setting up the following XML configuration, you can tell its analyzer how you wo
         <command>/opt/local/bin/osage</command>
         <nodes>
             <!-- Graphviz node settings for nodes meeting regex condition -->
-            <specified shape="box" fillcolor="ff00ff">                     <!-- default setting -->
-                <node shape="box" fillcolor="#33ffff">.*Model.*</node>     <!-- setting for specific nodes -->
+            <specified shape="box" fillcolor="#ff00ff">                     <!-- default setting -->
+                <node shape="box" fillcolor="#33ffff">.*Model.*</node>      <!-- setting for specific nodes -->
                 <node shape="box" fillcolor="#33ff00">.*View.*</node>
                 <node shape="box" fillcolor="#ff6633">.*Controller.*</node>
             </specified>
             <!-- Graphviz node settings for unspecified nodes calling specified ones -->
-            <unspecified shape="hexagon" fillcolor="ff00ff">
+            <unspecified shape="hexagon" fillcolor="#ff00ff">
                 <node shape="hexagon" fillcolor="#33ffff">.*Model.*</node>
                 <node shape="hexagon" fillcolor="#33ff00">.*View.*</node>
                 <node shape="hexagon" fillcolor="#ff6633">.*Controller.*</node>
