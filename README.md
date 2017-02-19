@@ -1,6 +1,6 @@
 # htags2callgraph
 
-## Overview of this tool  
+## Overview  
 htags2callgraph is a tool that generates a callgraph from 'htags' output files as shown in the following figure:
 
 ![Big Picture](https://github.com/hiroki-sawano/htags2callgraph/blob/master/images/big_picture.png)
