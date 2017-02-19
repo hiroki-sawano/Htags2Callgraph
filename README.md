@@ -1,17 +1,17 @@
 # htags2callgraph
 
-* Overview of this tool  
+## Overview of this tool  
 htags2callgraph is a tool that generates a callgraph from 'htags' output files as shown in the following figure:
 
 ![Big Picture](https://github.com/hiroki-sawano/htags2callgraph/blob/master/images/big_picture.png)
 
-* Example  
+## Example  
 An extracted graph can help you understand how the files(e.g. class files) you specify in the configuration file are called.  
 In the example below, the graph shows you the relations of classes in this project:  
 
 ![Call graph example](https://github.com/hiroki-sawano/htags2callgraph/blob/master/images/callgraph.gif)
 
-* Preparation  
+## Preparation  
 To begin with, you need to create HTML files based on tag files using 'htags' in GNU GLOBAL source code tagging system.  
 In addition, please make sure you have got Graphviz in your machine as the tool leverages it so as to draw a graph.  
 Setting up the following XML configuration, you can tell its analyzer how you would like to construct a graph:  
@@ -53,7 +53,7 @@ Setting up the following XML configuration, you can tell its analyzer how you wo
     </graphviz>
 </configuration>
 ````
-* Execution  
+## Execution  
 To run it, simply execute command :  
 ````sh
 java -jar <JAR file> <Configuration.xml>
