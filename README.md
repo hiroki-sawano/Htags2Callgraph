@@ -26,7 +26,7 @@ Setting up the following XML configuration, you can tell its analyzer how you wo
     <regex>.*</regex>
     <graphviz>
         <!-- Graphviz commands -->
-        <command>/opt/local/bin/dot</command> 
+        <command>/opt/local/bin/dot</command>
         <command>/opt/local/bin/neato</command>
         <command>/opt/local/bin/fdp</command>
         <command>/opt/local/bin/sfdp</command>
@@ -35,19 +35,16 @@ Setting up the following XML configuration, you can tell its analyzer how you wo
         <command>/opt/local/bin/osage</command>
         <nodes>
             <!-- Graphviz node settings for nodes meeting regex condition -->
-            <specified>
-                <!-- only support shape and fillcolor attributions -->
-                <node shape="box" fillcolor="#33ffff">.*Model.*</node>
+            <specified shape="box" fillcolor="ff00ff">                     <!-- default setting -->
+                <node shape="box" fillcolor="#33ffff">.*Model.*</node>     <!-- setting for specific nodes -->
                 <node shape="box" fillcolor="#33ff00">.*View.*</node>
                 <node shape="box" fillcolor="#ff6633">.*Controller.*</node>
-                <node shape="box" fillcolor="#ffff00">.*</node>
             </specified>
             <!-- Graphviz node settings for unspecified nodes calling specified ones -->
-            <unspecified>
+            <unspecified shape="hexagon" fillcolor="ff00ff">
                 <node shape="hexagon" fillcolor="#33ffff">.*Model.*</node>
                 <node shape="hexagon" fillcolor="#33ff00">.*View.*</node>
                 <node shape="hexagon" fillcolor="#ff6633">.*Controller.*</node>
-                <node shape="hexagon" fillcolor="#ffff00">.*</node>
             </unspecified>
         </nodes>
     </graphviz>
