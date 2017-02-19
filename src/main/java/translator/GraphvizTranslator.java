@@ -50,7 +50,7 @@ public class GraphvizTranslator {
                         }
                     }
                     if(!match){
-                        writer.write("    " + state + " [fillcolor=\"#ff00ff\"]\n");
+                        writer.write("    " + state + " [shape=" + graphviz.getNodes().getSpecified().getShape() + ", fillcolor=\"" + graphviz.getNodes().getSpecified().getFillcolor() + "\"]\n");
                     }
                 }else{
                     boolean match = false;
@@ -62,7 +62,7 @@ public class GraphvizTranslator {
                         }
                     }
                     if(!match){
-                        writer.write("    " + state + " [shape=hexagon, fillcolor=\"#ff00ff\"]\n");
+                        writer.write("    " + state + " [shape=" + graphviz.getNodes().getUnspecified().getShape() + ", fillcolor=\"" + graphviz.getNodes().getUnspecified().getFillcolor() + "\"]\n");
                     }
                 }
             }

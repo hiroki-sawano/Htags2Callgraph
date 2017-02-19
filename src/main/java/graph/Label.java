@@ -10,8 +10,20 @@ public class Label {
         this.condition = condition;
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
     @Override
     public String toString() {
-        return action + " [" + condition + "]";
+        if (condition != null) {
+            return action + " [" + condition + "]";
+        } else {
+            return action;
+        }
     }
 }

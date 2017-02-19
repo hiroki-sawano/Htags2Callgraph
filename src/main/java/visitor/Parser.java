@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import graph.Automaton;
+import graph.Label;
 import graph.State;
 import graph.TransitionRelation;
 import org.apache.commons.io.FilenameUtils;
@@ -94,10 +95,17 @@ public class Parser {
                     from = automaton.getState(caller);
                 }
                 // haven't given a label for now, but putting step number in it might be useful
+                //Label label = new Label(number, null);
+                //TransitionRelation transition = new TransitionRelation(from, to, label);
+                
                 TransitionRelation transition = new TransitionRelation(from, to, null);
                 if (automaton.isNewTransition(transition)) {
                     automaton.addTransitionRelation(transition);
-                }
+                }/*else{
+                    TransitionRelation t = automaton.getTransitionRelation(from.getId(), to.getId());
+                    Label l = t.getLabel();
+                    l.setAction(l.getAction() + ", " + number);
+                }*/
             } catch (IOException ex) {
                 logger.warn("can't read:" + settings.getHtagsDir() + "/" + caller);
             }

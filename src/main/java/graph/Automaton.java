@@ -38,6 +38,16 @@ public class Automaton{
         return states;
     }
 
+    public TransitionRelation getTransitionRelation(String from, String to){
+        for(TransitionRelation t : transitionRelations){
+            if (from.equals(t.getFrom().getId()) &&
+                    to.equals(t.getTo().getId())){
+                return t;
+            }
+        }
+        return null;
+    }
+    
     public List<TransitionRelation> getTransitionRelations() {
         return transitionRelations;
     }
@@ -66,7 +76,8 @@ public class Automaton{
     
     public boolean isNewTransition(TransitionRelation transition) {
         for (TransitionRelation t : transitionRelations) {
-            if (transition.toString().equals(t.toString())) {
+            if (transition.getFrom().getId().equals(t.getFrom().getId()) &&
+                    transition.getTo().getId().equals(t.getTo().getId())){
                 return false;
             }
         }

@@ -1,42 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
-    <xs:element name="configuration" type="configurationType"/>
-    <xs:complexType name="nodeType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="shape" use="optional"/>
-                <xs:attribute type="xs:string" name="fillcolor" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="specifiedType">
-        <xs:sequence>
-            <xs:element type="nodeType" name="node" maxOccurs="unbounded" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="unspecifiedType">
-        <xs:sequence>
-            <xs:element type="nodeType" name="node" maxOccurs="unbounded" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="nodesType">
-        <xs:sequence>
-            <xs:element type="specifiedType" name="specified"/>
-            <xs:element type="unspecifiedType" name="unspecified"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="graphvizType">
-        <xs:sequence>
-            <xs:element type="xs:string" name="command" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="nodesType" name="nodes"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="configurationType">
-        <xs:sequence>
-            <xs:element type="xs:string" name="htags_dir"/>
-            <xs:element type="xs:string" name="output_dir"/>
-            <xs:element type="xs:string" name="regex"/>
-            <xs:element type="graphvizType" name="graphviz"/>
-        </xs:sequence>
-    </xs:complexType>
+  <xs:element name="configuration" type="configurationType"/>
+  <xs:complexType name="nodeType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="shape" use="optional"/>
+        <xs:attribute type="xs:string" name="fillcolor" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="specifiedType">
+    <xs:sequence>
+      <xs:element type="nodeType" name="node" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="shape"/>
+    <xs:attribute type="xs:string" name="fillcolor"/>
+  </xs:complexType>
+  <xs:complexType name="unspecifiedType">
+    <xs:sequence>
+      <xs:element type="nodeType" name="node" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="shape"/>
+    <xs:attribute type="xs:string" name="fillcolor"/>
+  </xs:complexType>
+  <xs:complexType name="nodesType">
+    <xs:sequence>
+      <xs:element type="specifiedType" name="specified"/>
+      <xs:element type="unspecifiedType" name="unspecified"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="graphvizType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="command" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="nodesType" name="nodes"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="configurationType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="htags_dir"/>
+      <xs:element type="xs:string" name="output_dir"/>
+      <xs:element type="xs:string" name="regex"/>
+      <xs:element type="graphvizType" name="graphviz"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>

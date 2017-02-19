@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!-- htags HTML directory -->
     <htags_dir>/project/src/HTML</htags_dir>
+    <!-- output directory -->
     <output_dir>/project/callgraph</output_dir>
+    <!-- regular expression that matchs file names you focus on(i.e. callees) -->
     <regex>.*</regex>
     <graphviz>
+        <!-- Graphviz commands -->
         <command>/opt/local/bin/dot</command>
         <command>/opt/local/bin/neato</command>
         <command>/opt/local/bin/fdp</command>
@@ -12,17 +16,18 @@
         <command>/opt/local/bin/circo</command>
         <command>/opt/local/bin/osage</command>
         <nodes>
-            <specified>
+            <!-- Graphviz node settings for nodes meeting regex condition -->
+            <specified shape="box" fillcolor="ff00ff">
+                <!-- only support shape and fillcolor attributions -->
                 <node shape="box" fillcolor="#33ffff">.*Model.*</node>
                 <node shape="box" fillcolor="#33ff00">.*View.*</node>
                 <node shape="box" fillcolor="#ff6633">.*Controller.*</node>
-                <node shape="box" fillcolor="#ffff00">.*</node>
             </specified>
-            <unspecified>
+            <!-- Graphviz node settings for unspecified nodes calling specified ones -->
+            <unspecified shape="hexagon" fillcolor="ff00ff">
                 <node shape="hexagon" fillcolor="#33ffff">.*Model.*</node>
                 <node shape="hexagon" fillcolor="#33ff00">.*View.*</node>
                 <node shape="hexagon" fillcolor="#ff6633">.*Controller.*</node>
-                <node shape="hexagon" fillcolor="#ffff00">.*</node>
             </unspecified>
         </nodes>
     </graphviz>
