@@ -11,9 +11,7 @@ An extracted graph can help you understand how the files(e.g. class files) you s
 ![Call graph example](https://github.com/hiroki-sawano/htags2callgraph/blob/master/images/callgraph.gif)
 
 ## Preparation  
-To begin with, you need to create HTML files based on tag files using 'htags' in GNU GLOBAL source code tagging system.  
-In addition, please make sure you have got Graphviz in your machine as the tool leverages it so as to draw a graph.  
-Setting up the following XML configuration, you can tell its analyzer how you would like to construct a graph:  
+To begin with, you need to create HTML files based on tag files using 'htags' in GNU GLOBAL source code tagging system. In addition, please make sure you have got Graphviz in your machine as the tool leverages it so as to draw a graph. Setting up the following XML configuration, you can tell its analyzer how you would like to construct a graph:  
 ````xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
