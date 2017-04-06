@@ -66,7 +66,9 @@ public class Parser {
         }
 
         for (State s : newstates) {
-            automaton.addState(s);
+            if(automaton.isNewState(s)){
+                automaton.addState(s);
+            }
         }
 
         GraphvizTranslator graphTran = new GraphvizTranslator(automaton);
