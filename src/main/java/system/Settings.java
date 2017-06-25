@@ -14,6 +14,8 @@ public class Settings {
     private String regex = null;
     private GraphvizType graphviz = null;
 
+    private Settings(){}
+    
     public static synchronized Settings getInstance() {
         if (instance == null) {
             instance = new Settings();
